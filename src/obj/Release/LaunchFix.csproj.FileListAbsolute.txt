@@ -1,0 +1,17 @@
+C:\Users\parft\Documents\SolarExpanseMods\LaunchFix\obj\Release\LaunchFix.csproj.AssemblyReference.cache
+C:\Users\parft\Documents\SolarExpanseMods\LaunchFix\obj\Release\LaunchFix.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\parft\Documents\SolarExpanseMods\LaunchFix\obj\Release\LaunchFix.AssemblyInfoInputs.cache
+C:\Users\parft\Documents\SolarExpanseMods\LaunchFix\obj\Release\LaunchFix.AssemblyInfo.cs
+C:\Users\parft\Documents\SolarExpanseMods\LaunchFix\obj\Release\LaunchFix.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\Solar Expanse\BepInEx\plugins\launchfix\LaunchFix.dll
+C:\Program Files (x86)\Steam\steamapps\common\Solar Expanse\BepInEx\plugins\launchfix\LaunchFix.pdb
+C:\Users\parft\Documents\SolarExpanseMods\LaunchFix\obj\Release\LaunchFix.dll
+C:\Users\parft\Documents\SolarExpanseMods\LaunchFix\obj\Release\LaunchFix.pdb
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.csproj.AssemblyReference.cache
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.AssemblyInfoInputs.cache
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.AssemblyInfo.cs
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.csproj.CoreCompileInputs.cache
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.sourcelink.json
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.dll
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Release\LaunchFix.pdb
