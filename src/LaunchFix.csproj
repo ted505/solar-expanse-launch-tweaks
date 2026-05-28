@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <Target Name="CopyBuildOutputToRepositoryRoot" AfterTargets="Build">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)\.." />
-    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(MSBuildProjectDirectory)\.." Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)\..\plugins" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\plugins" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
   </Target>
 </Project>
