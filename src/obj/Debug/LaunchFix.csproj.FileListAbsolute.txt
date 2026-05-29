@@ -1,0 +1,10 @@
+C:\Program Files (x86)\Steam\steamapps\common\Solar Expanse\BepInEx\plugins\launchfix\LaunchFix.dll
+C:\Program Files (x86)\Steam\steamapps\common\Solar Expanse\BepInEx\plugins\launchfix\LaunchFix.pdb
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.csproj.AssemblyReference.cache
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.AssemblyInfoInputs.cache
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.AssemblyInfo.cs
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.csproj.CoreCompileInputs.cache
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.sourcelink.json
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.dll
+C:\Users\parft\Documents\SolarExpanseMods\solar-expanse-launch-tweaks\src\obj\Debug\LaunchFix.pdb

@@ -100,6 +100,27 @@ internal static class TooltipPatches
             catch { }
         }
 
+        // --- Self-launch fuel exceeds tank capacity ---
+        if (!PMMissionParameter.ScNoLVFuelOk && PMMissionParameter.SC != null && PMMissionParameter.LV == null)
+        {
+            try
+            {
+                double launchCost = PMMissionParameter.AllFuelNeedLV;
+                double minTransfer = PMMissionParameter.MINFuelCost;
+                double fuelCap = PMMissionParameter.SC.GetTypeSpaceCraft()
+                    .GetFuelCapacity(PMMissionParameter.FlyCompany) * PMMissionParameter.SCCount;
+
+                if (launchCost > 0 && launchCost + minTransfer > fuelCap)
+                {
+                    extra += $"\n<color=#AAAAAA>Launch: {FormatMass(launchCost, massFormat)}"
+                           + $" + Transfer: {FormatMass(minTransfer, massFormat)}"
+                           + $" = {FormatMass(launchCost + minTransfer, massFormat)}"
+                           + $" / {FormatMass(fuelCap, massFormat)} tank capacity</color>";
+                }
+            }
+            catch { }
+        }
+
         // --- Life support ---
         if (!PMMissionParameter.LifeSupportOk && PMMissionParameter.SC != null)
         {

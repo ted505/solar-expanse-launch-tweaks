@@ -12,6 +12,5 @@ public class Plugin : BaseUnityPlugin
     {
         Instance = this;
         Harmony.CreateAndPatchAll(typeof(Plugin).Assembly, "com.launchfix");
-        Logger.LogInfo("LaunchFix loaded");
     }
 }
