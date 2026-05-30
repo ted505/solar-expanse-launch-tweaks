@@ -4,6 +4,7 @@ using Game;
 using Game.Info;
 using Game.ObjectInfoDataScripts;
 using Game.UI.Windows.Elements.PlanMissionElements;
+using Game.UI.Windows.Windows;
 using HarmonyLib;
 using Manager;
 
@@ -29,10 +30,62 @@ internal static class LaunchVehiclePatches
             .MaxPayloadOnThisObject(p.Start, p.FlyCompany)
             * p.LVCount;
 
-        double nonFuelMass = (double)(sc.GetMass() * p.SCCount)
-                           + cargo.CargoCurrent;
+        double nonFuelMass = GetLvNonFuelPayloadMass(p);
 
         return Math.Max(0.0, maxPayload - nonFuelMass);
+    }
+
+    internal static double GetLvPayloadMass(PMMissionParameter p)
+    {
+        if (p == null || p.CargoAll == null)
+            return 0.0;
+
+        return GetLvNonFuelPayloadMass(p) + GetFuelMassCarriedByLv(p);
+    }
+
+    internal static double GetLvNonFuelPayloadMass(PMMissionParameter p)
+    {
+        if (p == null || p.SC == null || p.CargoAll == null)
+            return 0.0;
+
+        double payload = p.CargoAll.CargoCurrent;
+
+        // Hermes case: the spacecraft is already at the orbital staging point.
+        // The LV lifts cargo/modules and any missing propellant, not the SV dry mass.
+        if (p.Start != p.StartHermesCase)
+            return payload;
+
+        return payload + (double)(p.SC.GetMass() * p.SCCount);
+    }
+
+    internal static double GetFuelMassCarriedByLv(PMMissionParameter p)
+    {
+        if (p == null || p.CargoAll == null)
+            return 0.0;
+
+        if (p.Start != p.StartHermesCase)
+        {
+            double fuelAlreadyStaged = p.StartHermesCaseDataCheckResources
+                .CheckResourcesInterface(p.FuelNeedToStart);
+            return Math.Max(0.0, p.FuelNeedToGetFuelToOrbit - fuelAlreadyStaged);
+        }
+
+        return p.CargoAll.cargoFuel?.cargoMassPotencjal ?? 0.0;
+    }
+
+    internal static double GetLvAwareFuelSliderLimit(PMMissionParameter p, double fuelBudget)
+    {
+        if (p == null)
+            return fuelBudget;
+
+        if (p.Start != p.StartHermesCase)
+        {
+            double fuelAlreadyStaged = p.StartHermesCaseDataCheckResources
+                .CheckResourcesInterface(p.FuelNeedToStart);
+            return fuelAlreadyStaged + fuelBudget;
+        }
+
+        return fuelBudget;
     }
 
     [HarmonyPatch(typeof(LaunchVehicleType), nameof(LaunchVehicleType.CheckMaximumPayload))]
@@ -57,12 +110,18 @@ internal static class LaunchVehiclePatches
         if (!__result)
             return;
 
+        if (__instance.StageWindow == PlanMissionWindow.EStageWindow.SelectLaunchVehicle
+            || __instance.StageWindow == PlanMissionWindow.EStageWindow.SelectLaunchVehicleB)
+        {
+            return;
+        }
+
         double? fuelBudget = GetLvFuelBudget(__instance);
         if (!fuelBudget.HasValue)
             return;
 
-        double fuelLoaded = __instance.CargoAll.cargoFuel.cargoMassPotencjal;
-        if (fuelLoaded > fuelBudget.Value)
+        double fuelCarriedByLv = GetFuelMassCarriedByLv(__instance);
+        if (fuelCarriedByLv > fuelBudget.Value)
             __result = false;
     }
 
@@ -85,7 +144,11 @@ internal static class LaunchVehiclePatches
             return;
 
         double? fuelBudget = GetLvFuelBudget(__instance);
-        if (fuelBudget.HasValue && __result > fuelBudget.Value)
-            __result = fuelBudget.Value;
+        if (!fuelBudget.HasValue)
+            return;
+
+        double limit = GetLvAwareFuelSliderLimit(__instance, fuelBudget.Value);
+        if (__result > limit)
+            __result = limit;
     }
 }

@@ -34,11 +34,11 @@ internal static class TooltipPatches
                     .MaxPayloadOnThisObject(PMMissionParameter.Start, PMMissionParameter.FlyCompany)
                     * PMMissionParameter.LVCount;
 
-                double totalMass = (double)(PMMissionParameter.SC.GetMass() * PMMissionParameter.SCCount)
-                                 + PMMissionParameter.CargoAll.CargoCurrent
-                                 + PMMissionParameter.CargoAll.cargoFuel.cargoMassPotencjal;
+                double totalMass = LaunchVehiclePatches.GetLvPayloadMass(PMMissionParameter);
+                double fuelCarriedByLv = LaunchVehiclePatches.GetFuelMassCarriedByLv(PMMissionParameter);
 
                 extra += $"\n<color=#AAAAAA>Payload: {FormatMass(totalMass, massFormat)} / {FormatMass(maxPayload, massFormat)} capacity</color>";
+                extra += $"\n<color=#AAAAAA>LV-carried propellant: {FormatMass(fuelCarriedByLv, massFormat)}</color>";
             }
             catch { }
         }
