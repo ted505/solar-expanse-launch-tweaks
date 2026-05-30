@@ -18,4 +18,4 @@ This is a  mod for the game Solar Expanse which fixes issues with the base-game 
 1. This plugin uses BepInEx 5.4 to inject code into the Solar Expanse exe. Install it here: https://docs.bepinex.dev/articles/user_guide/installation/index.html
 2. Once BepInEx is installed, run it once to generate ```Solar Expanse/BepInEx/Plugins```
 3. Download the latest release of this mod.
-4. Move the ```Launch Tweaks``` folder in the ZIP into the ```BepInEx/Plugins``` folder.
+4. Move the ```launchfix``` folder in the ZIP into the ```BepInEx/Plugins``` folder.
