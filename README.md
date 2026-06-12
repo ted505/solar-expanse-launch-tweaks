@@ -1,5 +1,5 @@
 # Solar Expanse Launch Tweaks
-This is a mod for the game Solar Expanse which fixes issues with the base-game Mission Planner.
+This is a mod for the game Solar Expanse which fixes bugs and odd behavior with base game mission planning. This includes bugs with leftover propellant, unrealistic LV and SC behavior, and QOL features for making certain tasks (such as staging propellant in orbit) or expanded tooltips (explaning why missions are blocked).
 
 ## Features
 
