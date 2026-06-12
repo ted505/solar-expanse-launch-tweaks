@@ -1,0 +1,36 @@
+# Feature toggles. Set to false to disable individual features.
+# Omitted entries default to true (enabled).
+features:
+  lvPayloadCheck: true
+  selfLaunchFuelCheck: true
+  supplyMassInFuel: true
+  fuelSliderDefault: true
+  detailedTooltips: true
+  scDryMassTooltip: true
+  lvDryMass: true
+  atmospherePenalty: true
+  orbitFuelCredit: true
+
+# Atmosphere payload penalty for kinetic launchers.
+# At 1 atm, effective payload = maxPayload * factor.
+# At 0 atm, full payload. Linear interpolation between.
+# Only listed LVs are affected; unlisted LVs are not penalised.
+atmospherePayloadPenalty:
+  id_LV_launch_spin_Fake: 0.05      # Rotary Launcher (maxPayload 100)
+  id_LV_launch_magrails_Fake: 0.05  # Magnetic Launch Rails (maxPayload 1000)
+
+# LV dry mass as a percentage of costLaunch (propellant mass).
+# dry_mass = costLaunch * (ratio / 100)
+# LVs not listed fall back to 'default'. Set to 0 to disable.
+lvDryMassRatio:
+  default: 5
+  id_Rocket_RocketType1: 5       # Sparrow (costLaunch 150, maxPayload 10)
+  id_Rocket_RocketType2: 6       # Kestrel (costLaunch 300, maxPayload 64)
+  id_Rocket_RocketType3: 7       # Falcon (costLaunch 400, maxPayload 42)
+  id_Rocket_RocketType7: 5       # Hawk (costLaunch 500, maxPayload 200)
+  id_Rocket_RocketType4: 7       # Eagle (costLaunch 3000, maxPayload 800)
+  lv_chem_seadragon: 4           # Albatross (costLaunch 4600, maxPayload 1800)
+  lv_chemadvanced: 8             # Condor (costLaunch 8000, maxPayload 8000)
+  lv_nuke_small: 13              # Pelican (costLaunch 3000, maxPayload 1200)
+  lv_nuke_mid: 12                # Magpie (costLaunch 4800, maxPayload 4000)
+  lv_nuke_large: 10              # Teratorn (costLaunch 15000, maxPayload 20000)

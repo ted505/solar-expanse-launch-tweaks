@@ -1,3 +1,4 @@
+using System.IO;
 using BepInEx;
 using HarmonyLib;
 
@@ -11,6 +12,7 @@ public class Plugin : BaseUnityPlugin
     private void Awake()
     {
         Instance = this;
+        ModConfig.Load(Path.GetDirectoryName(Info.Location));
         Harmony.CreateAndPatchAll(typeof(Plugin).Assembly, "com.launchfix");
     }
 }

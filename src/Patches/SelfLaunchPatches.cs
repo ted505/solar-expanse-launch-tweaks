@@ -48,7 +48,7 @@ internal static class SelfLaunchPatches
     private static void CheckSCNoLVFuelOkPostfix(
         PMMissionParameter __instance, ref bool __result)
     {
-        if (!__result) return;
+        if (!ModConfig.SelfLaunchCost || !__result) return;
 
         if (GetSelfLaunchFuelShortfall(__instance) > 0)
             __result = false;

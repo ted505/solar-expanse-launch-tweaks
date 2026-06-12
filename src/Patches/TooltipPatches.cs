@@ -19,7 +19,7 @@ internal static class TooltipPatches
     [HarmonyPostfix]
     private static void GetTextToltipPostfix(PMMissionParameter PMMissionParameter, ref string __result)
     {
-        if (PMMissionParameter == null)
+        if (!ModConfig.DetailedTooltips || PMMissionParameter == null)
             return;
 
         string massFormat = LEManager.Get("UI.MassFormat");
@@ -36,9 +36,13 @@ internal static class TooltipPatches
 
                 double totalMass = LaunchVehiclePatches.GetLvPayloadMass(PMMissionParameter);
                 double fuelCarriedByLv = LaunchVehiclePatches.GetFuelMassCarriedByLv(PMMissionParameter);
+                double lvDryMass = LvDryMassPatches.GetLvDryMass(
+                    PMMissionParameter.LV.GetLaunchVehicleType()) * PMMissionParameter.LVCount;
 
                 extra += $"\n<color=#AAAAAA>Payload: {FormatMass(totalMass, massFormat)} / {FormatMass(maxPayload, massFormat)} capacity</color>";
                 extra += $"\n<color=#AAAAAA>LV-carried propellant: {FormatMass(fuelCarriedByLv, massFormat)}</color>";
+                if (lvDryMass > 0)
+                    extra += $"\n<color=#AAAAAA>LV dry mass: {FormatMass(lvDryMass, massFormat)}</color>";
             }
             catch { }
         }
@@ -63,7 +67,8 @@ internal static class TooltipPatches
                 float thrustKn = PMMissionParameter.SC.GetTypeSpaceCraft().GetThrust(PMMissionParameter.FlyCompany) * PMMissionParameter.SCCount;
                 double wetMass = (double)PMMissionParameter.SC.GetMass()
                                + PMMissionParameter.CargoAll.CargoCurrent
-                               + PMMissionParameter.CargoAll.cargoFuel.cargoMassPotencjal;
+                               + PMMissionParameter.CargoAll.cargoFuel.cargoMassPotencjal
+                               + SupplyMassPatches.GetSliderSupplyMass(PMMissionParameter);
 
                 extra += $"\n<color=#AAAAAA>Burn time: {burnStr} / {missionStr} available"
                        + $"\nThrust {thrustKn.ToPostfixString(LEManager.Get("UI.ForceFormat"))} · Wet mass {FormatMass(wetMass, massFormat)}</color>";
@@ -126,10 +131,13 @@ internal static class TooltipPatches
         {
             try
             {
-                double missionDays = PMMissionParameter.TimeSpanMissionLenght.TotalDays;
-                float maxSupply = PMMissionParameter.SC.GetTypeSpaceCraft()
-                    .GetMAXLifeSupport(PMMissionParameter.FlyCompany);
-                extra += $"\n<color=#AAAAAA>Supplies: {maxSupply.ToPostfixString(massFormat)} for {Math.Round(missionDays)} day mission</color>";
+                double requiredSupply = PMMissionParameter.LifeSupportNeed
+                                      / MonoBehaviourSingleton<GameManager>.Instance.Economic.SupplyToLifeSupportMultiplayer;
+                double loadedSupply = (PMMissionParameter.CargoAll.cargoFuel.lifeSupportValue
+                                    + PMMissionParameter.CargoAll.GetLifeSupportFromCargoSupply())
+                                   / MonoBehaviourSingleton<GameManager>.Instance.Economic.SupplyToLifeSupportMultiplayer;
+
+                extra += $"\n<color=#AAAAAA>Supplies: {FormatMass(loadedSupply, massFormat)} / {FormatMass(requiredSupply, massFormat)} required</color>";
             }
             catch { }
         }

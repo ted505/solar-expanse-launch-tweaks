@@ -12,6 +12,8 @@ internal static class PlanMissionLvTooltipPatches
     [HarmonyPostfix]
     private static void UpdatePostfix(PMTab __instance, ShowToolTip ___buttonNextShowToolTip)
     {
+        if (!ModConfig.DetailedTooltips)
+            return;
         if (__instance is not PMTabSelectLV || ___buttonNextShowToolTip == null)
             return;
         if (!__instance.Active || __instance.ButtonNextInteractable)
@@ -43,11 +45,17 @@ internal static class PlanMissionLvTooltipPatches
             double fuelCarriedByLv = LaunchVehiclePatches.GetFuelMassCarriedByLv(p);
             double lvPayload = LaunchVehiclePatches.GetLvPayloadMass(p);
 
-            return "\n\n<color=#AAAAAA>LV payload check:"
+            double lvDryMass = LvDryMassPatches.GetLvDryMass(
+                p.LV.GetLaunchVehicleType()) * p.LVCount;
+
+            string result = "\n\n<color=#AAAAAA>LV payload check:"
                  + $"\nCargo-only load: {FormatMass(cargoOnly, format)} / {FormatMass(lvMax, format)}"
-                 + $"\nLV-carried propellant: {FormatMass(fuelCarriedByLv, format)}"
-                 + $"\nLV payload: {FormatMass(lvPayload, format)} / {FormatMass(lvMax, format)}"
+                 + $"\nLV-carried propellant: {FormatMass(fuelCarriedByLv, format)}";
+            if (lvDryMass > 0)
+                result += $"\nLV dry mass: {FormatMass(lvDryMass, format)}";
+            result += $"\nLV payload: {FormatMass(lvPayload, format)} / {FormatMass(lvMax, format)}"
                  + $" ({p.SCCount} SC, {p.LVCount} LV)</color>";
+            return result;
         }
         catch
         {

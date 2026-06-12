@@ -48,14 +48,18 @@ internal static class LaunchVehiclePatches
         if (p == null || p.SC == null || p.CargoAll == null)
             return 0.0;
 
-        double payload = p.CargoAll.CargoCurrent;
+        double payload = p.CargoAll.CargoCurrent + SupplyMassPatches.GetSliderSupplyMass(p);
 
-        // Hermes case: the spacecraft is already at the orbital staging point.
-        // The LV lifts cargo/modules and any missing propellant, not the SV dry mass.
-        if (p.Start != p.StartHermesCase)
-            return payload;
+        if (p.LV != null && ModConfig.LvDryMass)
+            payload += LvDryMassPatches.GetLvDryMass(p.LV.GetLaunchVehicleType()) * p.LVCount;
 
-        return payload + (double)(p.SC.GetMass() * p.SCCount);
+        // If the SC is physically on the surface, the LV must lift its dry mass.
+        // Use Start.objectTypes rather than the Hermes flag, since our
+        // OrbitFuelPatches may promote a surface launch to Hermes case.
+        if (p.Start != null && p.Start.objectTypes != Data.EObjectTypes.Orbit)
+            payload += (double)(p.SC.GetMass() * p.SCCount);
+
+        return payload;
     }
 
     internal static double GetFuelMassCarriedByLv(PMMissionParameter p)
@@ -65,9 +69,10 @@ internal static class LaunchVehiclePatches
 
         if (p.Start != p.StartHermesCase)
         {
+            double totalFuel = p.CargoAll.cargoFuel?.cargoMassPotencjal ?? 0.0;
             double fuelAlreadyStaged = p.StartHermesCaseDataCheckResources
                 .CheckResourcesInterface(p.FuelNeedToStart);
-            return Math.Max(0.0, p.FuelNeedToGetFuelToOrbit - fuelAlreadyStaged);
+            return Math.Max(0.0, totalFuel - fuelAlreadyStaged);
         }
 
         return p.CargoAll.cargoFuel?.cargoMassPotencjal ?? 0.0;
@@ -96,9 +101,14 @@ internal static class LaunchVehiclePatches
         ISpacecraftInfo spacraft,
         ref bool __result)
     {
+        if (!ModConfig.LvPayloadCheck)
+            return true;
+
         double totalMass = cargo.CargoCurrent
                          + cargo.cargoFuel.cargoMassPotencjal
                          + (double)spacraft.GetMass();
+        if (ModConfig.LvDryMass)
+            totalMass += LvDryMassPatches.GetLvDryMass(__instance);
         __result = (double)__instance.maxPayload >= totalMass;
         return false;
     }
@@ -107,7 +117,7 @@ internal static class LaunchVehiclePatches
     [HarmonyPostfix]
     private static void CheckLVPostfix(PMMissionParameter __instance, ref bool __result)
     {
-        if (!__result)
+        if (!ModConfig.LvPayloadCheck || !__result)
             return;
 
         if (__instance.StageWindow == PlanMissionWindow.EStageWindow.SelectLaunchVehicle
@@ -116,12 +126,14 @@ internal static class LaunchVehiclePatches
             return;
         }
 
-        double? fuelBudget = GetLvFuelBudget(__instance);
-        if (!fuelBudget.HasValue)
+        if (__instance.LV == null)
             return;
 
-        double fuelCarriedByLv = GetFuelMassCarriedByLv(__instance);
-        if (fuelCarriedByLv > fuelBudget.Value)
+        double maxPayload = __instance.LV.GetLaunchVehicleType()
+            .MaxPayloadOnThisObject(__instance.Start, __instance.FlyCompany)
+            * __instance.LVCount;
+        double totalPayload = GetLvNonFuelPayloadMass(__instance) + GetFuelMassCarriedByLv(__instance);
+        if (totalPayload > maxPayload)
             __result = false;
     }
 
@@ -138,6 +150,9 @@ internal static class LaunchVehiclePatches
     [HarmonyPostfix]
     private static void MaxValueSliderFuelPostfix(PMMissionParameter __instance, ref double __result)
     {
+        if (!ModConfig.LvPayloadCheck)
+            return;
+
         bool isPlayerManual = __instance.FlyCompany == MonoBehaviourSingleton<GameManager>.Instance.Player
                            && !__instance.ReduceFuelToMinimum;
         if (isPlayerManual)
