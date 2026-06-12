@@ -7,11 +7,22 @@ All features can be individually toggled in `config.yaml`.
 
 ### Payload & Mass Corrections
 
-**LV Payload Check** (`lvPayloadCheck`)
-- The stock game only counts cargo weight when checking if a payload fits on a launch vehicle. This means a 10T Sparrow can launch a Stratos loaded with 1KT of fuel into orbit without complaint. This fix includes the spacecraft's dry mass and fuel in the payload check, so overloaded LVs are correctly flagged.
+### LV Launch Fixes
+
+**LV Orbit Transfer Fix** (`lvOrbitTransfer`)
+- When an LV launches a spacecraft to its parent body's own orbit (e.g. Earth to Earth Orbit with an Eagle), the stock game still charges the spacecraft a transfer burn as if it needs to fly somewhere after the LV delivers it. **This fixes a stock bug that results in massive amount of fuel lost to the void whenever launching a spacecraft to an orbit with an LV**. The LV already completed the trip -- there's nothing left to fly. This fix zeroes out the phantom delta-V so the spacecraft keeps all its fuel as leftover, as it should.
 
 **LV Dry Mass** (`lvDryMass`)
 - Launch vehicles in stock are treated as massless -- only their propellant is consumed. In reality, the rocket's own structure has to be lifted too. This adds configurable structural mass (as a percentage of propellant) to each LV's launch cost. Bigger rockets waste more fuel lifting themselves.
+<img width="337" height="159" alt="image" src="https://github.com/user-attachments/assets/5c07d16a-87d4-4222-a7dd-30d88453ac8a" />
+
+**Orbit Fuel Credit** (`orbitFuelCredit`)
+- When an LV launches from a surface body, the spacecraft ends up in orbit. But the stock game draws all mission fuel from surface stockpiles. This fix lets the spacecraft draw fuel from orbital reserves instead, making fuel staging in orbit a viable strategy. Pre-positioning fuel in orbit significantly extends a spacecraft's effective range -- critical for round trips from high-gravity bodies like Earth.
+- <img width="337" height="173" alt="image" src="https://github.com/user-attachments/assets/4ca8b568-d823-4453-8645-bc12951fa4bf" />
+
+
+**LV Payload Check** (`lvPayloadCheck`)
+- The stock game only counts cargo weight when checking if a payload fits on a launch vehicle. This means a 10T Sparrow can launch a Stratos loaded with 1KT of fuel into orbit without complaint. This fix includes the spacecraft's dry mass and fuel in the payload check, so overloaded LVs are correctly flagged.
 
 **Supply Mass in Fuel** (`supplyMassInFuel`)
 - The stock game ignores supply mass when computing how much transfer fuel a mission needs. Missions carrying heavy supplies burn the same fuel as empty ones. This fix includes supply mass in the Tsiolkovsky calculation, so heavier loads require proportionally more fuel.
@@ -26,14 +37,6 @@ All features can be individually toggled in `config.yaml`.
 
 **Self-Launch Fuel Scaling** (`selfLaunchDv`)
 - When self-launching, the stock game computes launch cost using a fixed mass based on the minimum transfer fuel, regardless of how much fuel is actually loaded. Extra fuel rides to orbit for free. This fix replaces it with a proper two-stage rocket equation: the launch cost now scales with the total loaded mass. More fuel on board means a heavier ship means more fuel burned reaching orbit.
-
-### LV Launch Fixes
-
-**LV Orbit Transfer Fix** (`lvOrbitTransfer`)
-- When an LV launches a spacecraft to its parent body's own orbit (e.g. Earth to Earth Orbit with an Eagle), the stock game still charges the spacecraft a transfer burn as if it needs to fly somewhere after the LV delivers it. The LV already completed the trip -- there's nothing left to fly. This fix zeroes out the phantom delta-V so the spacecraft keeps all its fuel.
-
-**Orbit Fuel Credit** (`orbitFuelCredit`)
-- When an LV launches from a surface body, the spacecraft ends up in orbit. But the stock game draws all mission fuel from surface stockpiles. This fix lets the spacecraft draw fuel from orbital reserves instead, making fuel staging in orbit a viable strategy. Pre-positioning fuel in orbit significantly extends a spacecraft's effective range -- critical for round trips from high-gravity bodies like Earth.
 
 ### Atmosphere
 
