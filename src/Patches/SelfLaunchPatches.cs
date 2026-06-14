@@ -23,6 +23,7 @@ internal static class SelfLaunchPatches
     /// </summary>
     internal static double GetSelfLaunchFuelShortfall(PMMissionParameter p)
     {
+        if (PatchScope.IsAIMission(p)) return 0;
         if (p.LV != null) return 0;
         if (p.SC == null) return 0;
         if (p.CargoAll == null) return 0;
@@ -48,7 +49,8 @@ internal static class SelfLaunchPatches
     private static void CheckSCNoLVFuelOkPostfix(
         PMMissionParameter __instance, ref bool __result)
     {
-        if (!ModConfig.SelfLaunchCost || !__result) return;
+        if (!ModConfig.SelfLaunchFuelCheck || !__result) return;
+        if (PatchScope.IsAIMission(__instance)) return;
 
         if (GetSelfLaunchFuelShortfall(__instance) > 0)
             __result = false;

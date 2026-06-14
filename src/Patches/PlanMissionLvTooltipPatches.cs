@@ -34,6 +34,8 @@ internal static class PlanMissionLvTooltipPatches
     {
         if (p?.LV == null || p.SC == null || p.CargoAll == null)
             return "";
+        if (PatchScope.IsAIMission(p))
+            return "";
 
         try
         {

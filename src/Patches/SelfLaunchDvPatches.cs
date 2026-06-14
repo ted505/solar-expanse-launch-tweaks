@@ -40,6 +40,8 @@ internal static class SelfLaunchDvPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null || p.LV != null || p.SC == null)
             return;
+        if (PatchScope.IsAIMission(p))
+            return;
         if (p.OrbitCase)
             return;
         if (p.Start == null || p.Start.objectTypes == Data.EObjectTypes.Orbit)
@@ -80,6 +82,8 @@ internal static class SelfLaunchDvPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null)
             return;
+        if (PatchScope.IsAIMission(p))
+            return;
 
         ComputeTwoStage(p, out double launchFuel, out double transferFuel, out double leftOver);
         launchCost = launchFuel;
@@ -103,6 +107,8 @@ internal static class SelfLaunchDvPatches
 
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null)
+            return;
+        if (PatchScope.IsAIMission(p))
             return;
 
         ComputeTwoStage(p, out double launchFuel, out double transferFuel, out double leftOver);

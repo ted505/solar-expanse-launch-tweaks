@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Fixes LV payload checks to include fuel mass; adds dry mass to spacecraft tooltip" +
     "s")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.1.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.1.0+33f64a8f6e6df4c1015c57f6c0cdaf24f9b7f5f2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.1.0+5623cec9021ecb71741b1ad25711c1c663cecbbc")]
 [assembly: System.Reflection.AssemblyProductAttribute("LaunchFix")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LaunchFix")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.1.0.0")]

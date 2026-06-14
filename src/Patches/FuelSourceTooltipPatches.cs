@@ -26,6 +26,8 @@ internal static class FuelSourceTooltipPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null || p.Start == null || p.CargoAll == null)
             return;
+        if (PatchScope.IsAIMission(p))
+            return;
         if (p.Start == p.StartHermesCase)
             return;
 

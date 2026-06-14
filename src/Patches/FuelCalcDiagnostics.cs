@@ -21,6 +21,8 @@ internal static class FuelCalcDiagnostics
                 Debug.Log("[LaunchFix:DIAG] PMMissionParameter is null");
                 return;
             }
+            if (PatchScope.IsAIMission(p))
+                return;
 
             string startName = p.Start?.ObjectName ?? "null";
             string targetName = p.Target?.ObjectName ?? "null";

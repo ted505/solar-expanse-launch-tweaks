@@ -19,6 +19,7 @@ internal static class LaunchVehiclePatches
     /// </summary>
     internal static double? GetLvFuelBudget(PMMissionParameter p)
     {
+        if (PatchScope.IsAIMission(p)) return null;
         var lv = p.LV;
         if (lv == null) return null;
         var sc = p.SC;
@@ -37,6 +38,7 @@ internal static class LaunchVehiclePatches
 
     internal static double GetLvPayloadMass(PMMissionParameter p)
     {
+        if (PatchScope.IsAIMission(p)) return 0.0;
         if (p == null || p.CargoAll == null)
             return 0.0;
 
@@ -45,6 +47,7 @@ internal static class LaunchVehiclePatches
 
     internal static double GetLvNonFuelPayloadMass(PMMissionParameter p)
     {
+        if (PatchScope.IsAIMission(p)) return 0.0;
         if (p == null || p.SC == null || p.CargoAll == null)
             return 0.0;
 
@@ -64,6 +67,7 @@ internal static class LaunchVehiclePatches
 
     internal static double GetFuelMassCarriedByLv(PMMissionParameter p)
     {
+        if (PatchScope.IsAIMission(p)) return 0.0;
         if (p == null || p.CargoAll == null)
             return 0.0;
 
@@ -103,6 +107,8 @@ internal static class LaunchVehiclePatches
     {
         if (!ModConfig.LvPayloadCheck)
             return true;
+        if (spacraft != null && PatchScope.IsAICompany(spacraft.GetCompany()))
+            return true;
 
         double totalMass = cargo.CargoCurrent
                          + cargo.cargoFuel.cargoMassPotencjal
@@ -118,6 +124,8 @@ internal static class LaunchVehiclePatches
     private static void CheckLVPostfix(PMMissionParameter __instance, ref bool __result)
     {
         if (!ModConfig.LvPayloadCheck || !__result)
+            return;
+        if (PatchScope.IsAIMission(__instance))
             return;
 
         if (__instance.StageWindow == PlanMissionWindow.EStageWindow.SelectLaunchVehicle
@@ -151,6 +159,8 @@ internal static class LaunchVehiclePatches
     private static void MaxValueSliderFuelPostfix(PMMissionParameter __instance, ref double __result)
     {
         if (!ModConfig.LvPayloadCheck)
+            return;
+        if (PatchScope.IsAIMission(__instance))
             return;
 
         bool isPlayerManual = __instance.FlyCompany == MonoBehaviourSingleton<GameManager>.Instance.Player

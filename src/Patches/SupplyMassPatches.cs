@@ -24,6 +24,8 @@ internal static class SupplyMassPatches
     {
         if (p == null || p.CargoAll?.cargoFuel == null)
             return false;
+        if (PatchScope.IsAIMission(p))
+            return false;
         if (p.FlyCompany != MonoBehaviourSingleton<GameManager>.Instance.Player)
             return false;
         if (p.ForCyclicalMission)

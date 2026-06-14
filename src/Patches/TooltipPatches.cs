@@ -21,6 +21,8 @@ internal static class TooltipPatches
     {
         if (!ModConfig.DetailedTooltips || PMMissionParameter == null)
             return;
+        if (PatchScope.IsAIMission(PMMissionParameter))
+            return;
 
         string massFormat = LEManager.Get("UI.MassFormat");
         string extra = "";

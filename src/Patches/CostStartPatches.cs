@@ -30,6 +30,8 @@ internal static class CostStartPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null || p.Start == null || p.CargoAll == null)
             return;
+        if (PatchScope.IsAIMission(p))
+            return;
         if (p.Start.objectTypes == Data.EObjectTypes.Orbit)
             return;
         if (p.Start == p.StartHermesCase)

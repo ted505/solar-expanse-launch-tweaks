@@ -25,6 +25,8 @@ internal static class OrbitTransferPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null || p.LV == null)
             return;
+        if (PatchScope.IsAIMission(p))
+            return;
         if (p.Start == null || p.Start.objectTypes == EObjectTypes.Orbit)
             return;
         if (p.Target == null || p.Start.LowOrbitCustom == null)

@@ -13,9 +13,12 @@ internal static class AtmospherePenaltyPatches
     private static void MaxPayloadOnThisObjectPostfix(
         LaunchVehicleType __instance,
         ObjectInfo objectInfo,
+        Company company,
         ref double __result)
     {
         if (!ModConfig.AtmospherePenalty)
+            return;
+        if (PatchScope.IsAICompany(company))
             return;
         if (double.IsNaN(__result) || __result <= 0)
             return;

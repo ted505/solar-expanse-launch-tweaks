@@ -38,6 +38,8 @@ internal static class SelfLaunchCostPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null || p.LV != null || p.SC == null)
             return;
+        if (PatchScope.IsAIMission(p))
+            return;
         if (p.Start == null || p.Start.objectTypes == Data.EObjectTypes.Orbit)
             return;
 
@@ -57,6 +59,8 @@ internal static class SelfLaunchCostPatches
 
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p?.CargoAll?.cargoFuel == null)
+            return;
+        if (PatchScope.IsAIMission(p))
             return;
 
         double sliderFuel = p.CargoAll.cargoFuel.cargoMassPotencjal;

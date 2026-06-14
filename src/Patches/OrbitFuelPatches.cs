@@ -14,6 +14,8 @@ internal static class OrbitFuelPatches
     {
         if (!ModConfig.OrbitFuelCredit || SuppressPromotion)
             return;
+        if (PatchScope.IsAIMission(__instance))
+            return;
         if (__result != __instance.Start)
             return;
         if (__instance.LV == null)

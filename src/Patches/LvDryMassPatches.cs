@@ -33,6 +33,8 @@ internal static class LvDryMassPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p?.LV == null || p.CargoAll?.cargoFuel == null)
             return;
+        if (PatchScope.IsAIMission(p))
+            return;
 
         double dryMass = GetLvDryMass(p.LV.GetLaunchVehicleType()) * p.LVCount;
         if (dryMass <= 0)
