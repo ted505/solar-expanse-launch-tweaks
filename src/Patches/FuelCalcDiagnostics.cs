@@ -13,6 +13,9 @@ internal static class FuelCalcDiagnostics
     [HarmonyPostfix]
     private static void Postfix(PMTabSchedule __instance)
     {
+        if (!ModConfig.FuelCalcDiagnostics)
+            return;
+
         try
         {
             var p = __instance.PlanMissionWindow?.PMMissionParameter;

@@ -26,10 +26,11 @@ internal static class ModConfig
     internal static bool OrbitFuelCredit => GetFeature("orbitFuelCredit");
     internal static bool SelfLaunchDv => GetFeature("selfLaunchDv");
     internal static bool LvOrbitTransfer => GetFeature("lvOrbitTransfer");
+    internal static bool FuelCalcDiagnostics => GetFeature("fuelCalcDiagnostics", false);
 
-    private static bool GetFeature(string name)
+    private static bool GetFeature(string name, bool defaultValue = true)
     {
-        return !_features.TryGetValue(name, out bool enabled) || enabled;
+        return _features.TryGetValue(name, out bool enabled) ? enabled : defaultValue;
     }
 
     internal static void Load(string pluginDir)
@@ -174,6 +175,8 @@ internal static class ModConfig
         "  atmospherePenalty: true\n" +
         "  # Let LV-launched SCs draw fuel from orbit instead of surface\n" +
         "  orbitFuelCredit: true\n" +
+        "  # Emit verbose FunctionCalculateFuel diagnostic logs\n" +
+        "  fuelCalcDiagnostics: false\n" +
         "\n" +
         "# Atmosphere payload penalty for kinetic launchers.\n" +
         "# At 1.2 atm, effective payload = maxPayload * factor.\n" +

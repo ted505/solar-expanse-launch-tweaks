@@ -61,6 +61,8 @@ All features can be individually toggled in `config.yaml`.
 
 All features are enabled by default. Edit `BepInEx/plugins/launchfix/config.yaml` to disable individual features or tune parameters.
 
+Verbose `FunctionCalculateFuel` diagnostic logging is available with `fuelCalcDiagnostics`, but defaults to `false`.
+
 The config file also includes:
 - **Per-LV atmosphere penalties** for kinetic launchers
 - **Per-LV dry mass ratios** as a percentage of propellant mass

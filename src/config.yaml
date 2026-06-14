@@ -10,6 +10,7 @@ features:
   lvDryMass: true
   atmospherePenalty: true
   orbitFuelCredit: true
+  fuelCalcDiagnostics: false
 
 # Atmosphere payload penalty for kinetic launchers.
 # At 1 atm, effective payload = maxPayload * factor.
