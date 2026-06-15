@@ -49,8 +49,15 @@ internal static class SelfLaunchPatches
     private static void CheckSCNoLVFuelOkPostfix(
         PMMissionParameter __instance, ref bool __result)
     {
-        if (!ModConfig.SelfLaunchFuelCheck || !__result) return;
         if (PatchScope.IsAIMission(__instance)) return;
+
+        if (__instance.SolarSC)
+        {
+            __result = true;
+            return;
+        }
+
+        if (!ModConfig.SelfLaunchFuelCheck || !__result) return;
 
         if (GetSelfLaunchFuelShortfall(__instance) > 0)
             __result = false;
