@@ -56,10 +56,11 @@ internal static class LaunchVehiclePatches
         if (p.LV != null && ModConfig.LvDryMass)
             payload += LvDryMassPatches.GetLvDryMass(p.LV.GetLaunchVehicleType()) * p.LVCount;
 
-        // If the SC is physically on the surface, the LV must lift its dry mass.
-        // Use Start.objectTypes rather than the Hermes flag, since our
-        // OrbitFuelPatches may promote a surface launch to Hermes case.
-        if (p.Start != null && p.Start.objectTypes != Data.EObjectTypes.Orbit)
+        // The LV must lift SC dry mass only if the SC is physically on the
+        // surface.  Orbit SCs (e.g. Nike) are already in orbit — Start is
+        // the surface body where the LV launches, not where the SC sits.
+        if (p.Start != null && p.Start.objectTypes != Data.EObjectTypes.Orbit
+            && !p.SC.GetTypeSpaceCraft().OrbitSC)
             payload += (double)(p.SC.GetMass() * p.SCCount);
 
         return payload;
@@ -111,8 +112,9 @@ internal static class LaunchVehiclePatches
             return true;
 
         double totalMass = cargo.CargoCurrent
-                         + cargo.cargoFuel.cargoMassPotencjal
-                         + (double)spacraft.GetMass();
+                         + cargo.cargoFuel.cargoMassPotencjal;
+        if (!spacraft.GetTypeSpaceCraft().OrbitSC)
+            totalMass += (double)spacraft.GetMass();
         if (ModConfig.LvDryMass)
             totalMass += LvDryMassPatches.GetLvDryMass(__instance);
         __result = (double)__instance.maxPayload >= totalMass;
