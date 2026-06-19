@@ -16,6 +16,9 @@ All features can be individually toggled in `config.yaml`.
 - Launch vehicles in stock are treated as massless -- only their propellant is consumed. In reality, the rocket's own structure has to be lifted too. This adds configurable structural mass (as a percentage of propellant) to each LV's launch cost. Bigger rockets waste more fuel lifting themselves.
 <img width="337" height="159" alt="image" src="https://github.com/user-attachments/assets/5c07d16a-87d4-4222-a7dd-30d88453ac8a" />
 
+**LV Gravity Cost** (`lvGravityCost`)
+- Launching from a low-gravity body should be cheaper, but the stock game applies the gravity discount twice -- once by inflating the launch vehicle's effective payload capacity, and again by scaling the launch cost down directly. The result is that launches from low-gravity bodies (Luna, Mars) cost far too little and barely respond to how heavily you load the rocket. This fix applies the gravity discount once, so launch cost from low-gravity bodies is still reduced but no longer collapses to almost nothing. Launches from the home body are unaffected.
+
 **Orbit Fuel Credit** (`orbitFuelCredit`)
 - When an LV launches from a surface body, the spacecraft ends up in orbit. But the stock game draws all mission fuel from surface stockpiles. This fix lets the spacecraft draw fuel from orbital reserves instead, making fuel staging in orbit a viable strategy. Pre-positioning fuel in orbit significantly extends a spacecraft's effective range -- critical for round trips from high-gravity bodies like Earth.
 - <img width="337" height="173" alt="image" src="https://github.com/user-attachments/assets/4ca8b568-d823-4453-8645-bc12951fa4bf" />
