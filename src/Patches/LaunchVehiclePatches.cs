@@ -110,6 +110,13 @@ internal static class LaunchVehiclePatches
             return true;
         if (spacraft != null && PatchScope.IsAICompany(spacraft.GetCompany()))
             return true;
+        if (cargo != null && cargo.entireAsteroid)
+            return true;
+        if (spacraft != null
+            && spacraft.GetTypeSpaceCraft().IsInterstellarShipOrAsteroidPullingShipFromFacility)
+        {
+            return true;
+        }
 
         double totalMass = cargo.CargoCurrent
                          + cargo.cargoFuel.cargoMassPotencjal;
@@ -128,6 +135,8 @@ internal static class LaunchVehiclePatches
         if (!ModConfig.LvPayloadCheck || !__result)
             return;
         if (PatchScope.IsAIMission(__instance))
+            return;
+        if (PatchScope.IsAsteroidOrInterstellar(__instance))
             return;
 
         if (__instance.StageWindow == PlanMissionWindow.EStageWindow.SelectLaunchVehicle
@@ -163,6 +172,8 @@ internal static class LaunchVehiclePatches
         if (!ModConfig.LvPayloadCheck)
             return;
         if (PatchScope.IsAIMission(__instance))
+            return;
+        if (PatchScope.IsAsteroidOrInterstellar(__instance))
             return;
 
         bool isPlayerManual = __instance.FlyCompany == MonoBehaviourSingleton<GameManager>.Instance.Player
