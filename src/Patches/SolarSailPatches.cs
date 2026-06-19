@@ -6,10 +6,18 @@ namespace LaunchFix.Patches;
 /// <summary>
 /// Two fixes for solar sails (and orbit SCs in general):
 ///
-/// 1. CalculateCostInFuel prefix: skip the self-launch dV block when
-///    Start != StartHermesCase, meaning the SC is in orbit, not on the
-///    surface.  Stock only guards on LV==null, so orbit SCs without an
-///    LV get charged a phantom surface launch cost.
+/// 1. CalculateCostInFuel prefix: when the craft departs from orbit rather
+///    than the surface (Start != StartHermesCase), zero the porkchop
+///    dV1/dV2.  Pre-existing behavior for self-launching (LV == null)
+///    orbit SCs; left unchanged here.
+///
+///    Added guard (LV != null -> return): OrbitFuelPatches promotes a
+///    surface SC's StartHermesCase to low orbit on any LV launch, which
+///    also makes Start != StartHermesCase true.  Without this guard the
+///    prefix zeroed the real interplanetary transfer dV1/dV2, collapsing
+///    the SC's transfer-leg cost to 0 (task 005).  With an LV the ascent
+///    is billed separately via CalculateCostStart, so the transfer must
+///    remain billed.
 ///
 /// 2. FunctionCalculateFuel postfix: zero all fuel values for solar sails.
 ///    Stock computes Tsiolkovsky with exhaustV=1, producing garbage
@@ -28,6 +36,7 @@ internal static class SolarSailPatches
         var p = __instance.PlanMissionWindow?.PMMissionParameter;
         if (p == null) return;
         if (PatchScope.IsAIMission(p)) return;
+        if (p.LV != null) return;
 
         if (p.Start != p.StartHermesCase)
         {
