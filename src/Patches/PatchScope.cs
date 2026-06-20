@@ -18,4 +18,22 @@ internal static class PatchScope
     {
         return p != null && IsAICompany(p.FlyCompany);
     }
+
+    /// <summary>
+    /// Asteroid-pulling and interstellar missions use a different payload mass
+    /// basis, so the LV payload check must not apply to them.
+    /// </summary>
+    internal static bool IsAsteroidOrInterstellar(PMMissionParameter p)
+    {
+        if (p == null)
+            return false;
+
+        var cargo = p.CargoAll;
+        if (cargo != null && cargo.entireAsteroid)
+            return true;
+
+        var sc = p.SC;
+        return sc != null
+            && sc.GetTypeSpaceCraft().IsInterstellarShipOrAsteroidPullingShipFromFacility;
+    }
 }
