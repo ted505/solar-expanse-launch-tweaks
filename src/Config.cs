@@ -22,6 +22,7 @@ internal static class ModConfig
     internal static bool DetailedTooltips => GetFeature("detailedTooltips");
     internal static bool ScDryMassTooltip => GetFeature("scDryMassTooltip");
     internal static bool LvDryMass => GetFeature("lvDryMass");
+    internal static bool LvGravityCost => GetFeature("lvGravityCost");
     internal static bool AtmospherePenalty => GetFeature("atmospherePenalty");
     internal static bool OrbitFuelCredit => GetFeature("orbitFuelCredit");
     internal static bool SelfLaunchDv => GetFeature("selfLaunchDv");
@@ -171,6 +172,9 @@ internal static class ModConfig
         "  scDryMassTooltip: true\n" +
         "  # Add LV dry mass (structural weight) to launch cost\n" +
         "  lvDryMass: true\n" +
+        "  # Apply surface gravity to LV launch cost once, not squared\n" +
+        "  # Stock divides max payload by gravity AND multiplies cost by it\n" +
+        "  lvGravityCost: true\n" +
         "  # Reduce kinetic launcher payload in atmosphere\n" +
         "  atmospherePenalty: true\n" +
         "  # Let LV-launched SCs draw fuel from orbit instead of surface\n" +
