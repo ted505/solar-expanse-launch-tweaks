@@ -10,7 +10,10 @@ namespace LaunchFix.Patches;
 /// multiplied by num3 (the surface-gravity ratio), so cost scales with gravity squared.
 /// Gravity should apply once. Divide __result by num3 to undo the redundant factor; on the
 /// home body num3 == 1, so this is a no-op there.
-[HarmonyPatch(typeof(PMTabSchedule), "CalculateCostStart")]
+// Instance overload only; the static (PMMissionParameter, ...) overload added in the
+// Sept 2026 build is also used for orbital-construction pricing.
+[HarmonyPatch(typeof(PMTabSchedule), "CalculateCostStart",
+    new[] { typeof(double), typeof(bool) }, new[] { ArgumentType.Normal, ArgumentType.Out })]
 internal static class LvGravityCostPatches
 {
     [HarmonyPostfix]

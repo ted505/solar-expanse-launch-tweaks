@@ -27,7 +27,10 @@ internal static class SelfLaunchCostPatches
         _launchProp = 0.0;
     }
 
-    [HarmonyPatch(typeof(PMTabSchedule), "CalculateCostStart")]
+    // Instance overload only; the static (PMMissionParameter, ...) overload added in the
+    // Sept 2026 build is also used for orbital-construction pricing.
+    [HarmonyPatch(typeof(PMTabSchedule), "CalculateCostStart",
+        new[] { typeof(double), typeof(bool) }, new[] { ArgumentType.Normal, ArgumentType.Out })]
     [HarmonyPostfix]
     [HarmonyPriority(Priority.Low)]
     private static void CalculateCostStartPostfix(PMTabSchedule __instance)

@@ -136,6 +136,9 @@ internal static class LaunchVehiclePatches
             return;
         if (PatchScope.IsAIMission(__instance))
             return;
+        // Stock bypasses LV checks for cyclical legs fuelled from virtual storage.
+        if (__instance.UseVirtualStorageForFuel)
+            return;
         if (PatchScope.IsAsteroidOrInterstellar(__instance))
             return;
 
@@ -165,7 +168,9 @@ internal static class LaunchVehiclePatches
     /// When minFuelCost exceeds the capped max, FuelMinNeedIsLargerThanMaxValue
     /// is set, which is the game's standard "impossible mission" signal.
     /// </summary>
-    [HarmonyPatch(typeof(PMMissionParameter), nameof(PMMissionParameter.MaxValueSliderFuel))]
+    // The out-bool overload: the no-arg overload forwards to it and FuelSpaceCraftUI.SetDate calls it directly.
+    [HarmonyPatch(typeof(PMMissionParameter), nameof(PMMissionParameter.MaxValueSliderFuel),
+        new[] { typeof(bool) }, new[] { ArgumentType.Out })]
     [HarmonyPostfix]
     private static void MaxValueSliderFuelPostfix(PMMissionParameter __instance, ref double __result)
     {
@@ -174,6 +179,8 @@ internal static class LaunchVehiclePatches
         if (PatchScope.IsAIMission(__instance))
             return;
         if (PatchScope.IsAsteroidOrInterstellar(__instance))
+            return;
+        if (__instance.UseVirtualStorageForFuel)
             return;
 
         bool isPlayerManual = __instance.FlyCompany == MonoBehaviourSingleton<GameManager>.Instance.Player

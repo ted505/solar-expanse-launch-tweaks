@@ -18,7 +18,10 @@ namespace LaunchFix.Patches;
 ///    fuel on the slider. We replace it with (sliderFuel - orbitFuel)
 ///    so launch cost scales with the actual fuel payload.
 /// </summary>
-[HarmonyPatch(typeof(PMTabSchedule), "CalculateCostStart")]
+// Instance overload only; the static (PMMissionParameter, ...) overload added in the
+// Sept 2026 build is also used for orbital-construction pricing.
+[HarmonyPatch(typeof(PMTabSchedule), "CalculateCostStart",
+    new[] { typeof(double), typeof(bool) }, new[] { ArgumentType.Normal, ArgumentType.Out })]
 internal static class CostStartPatches
 {
     [HarmonyPrefix]
